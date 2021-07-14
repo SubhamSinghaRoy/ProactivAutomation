@@ -1,12 +1,16 @@
 package com.automation.testcases;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.automation.pages.HomePage;
@@ -18,35 +22,47 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 public class CXTest extends BaseClass{
 
 	
-//	List<WebElement> linksList = clickableLinks(driver);
+	
 	
 	@Test
-	public void testmemberSite() {
+	public void testMemberSite() {
 		HomePage hp = PageFactory.initElements(driver, HomePage.class);
 		LoginPage lp = PageFactory.initElements(driver, LoginPage.class);
 		MemberDashboard md = PageFactory.initElements(driver, MemberDashboard.class);
+
+
 		try {
-			logger = report.createTest("CXT Site Test");
+			logger = report.createTest("Member Dashboard Links Test");
 			hp.clickLoginlink();
 			lp.loginToMember("New017@yopmail.com", "Tpcweb123");
 			if(driver.getTitle().equals("member-dashboard")) {
 				logger.pass("Login Successful");
-				List<WebElement> dashboardLinks = driver.findElements(By.xpath("//div[@class='memberDashboard']//a"));
-				for(WebElement link : dashboardLinks) {
+				WebDriverWait wait =new WebDriverWait(driver, 30);
+				wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+				List<String> linksList = clickableLinks(driver);
+
+				for(String link : linksList) {
+					String url = link;
 					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("arguments[0].scrollIntoView();", link);
-					link.click();
-					WebElement pageTitle = driver.findElement(By.xpath("//body"));
-					WebDriverWait wait =new WebDriverWait(driver, 15);
+					js.executeScript("window.open()");
+					ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+					driver.switchTo().window(tabs.get(1));
+					driver.get(url);
+					
 					wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
-					if(pageTitle.getText().contains("Page Not Found")) {
-						logger.fail(link+" launched and but broken", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
+					WebElement pageContent = driver.findElement(By.xpath("//body"));
+					
+					if(pageContent.getText().contains("Page Not Found")) {
+						logger.fail(url+" launched and but broken", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
 					}
 					else {
-						logger.pass(link+" launched and fine", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
+
+						logger.pass(url+" launched and fine", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
+						Assert.assertTrue(true);
 					}
-					driver.navigate().back();
-					js.executeScript("window.scrollBy(0,-300)", "");
+					js.executeScript("window.close()");
+
+					driver.switchTo().window(tabs.get(0));
 				}
 			}
 			else {
@@ -54,19 +70,22 @@ public class CXTest extends BaseClass{
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			//Assert.fail("test failed");
 			e.printStackTrace();
 		}
 		
 	}
 	
-//	public List<WebElement> clickableLinks(WebDriver driver){
-//		List<WebElement> linksToClick = new ArrayList<WebElement>();
-//		List<WebElement> dashboardLinks = driver.findElements(By.xpath("//div[@class='memberDashboard']//a"));
-//		for (WebElement e : dashboardLinks) {
-//			if(e.getAttribute("href")!=null) {
-//				linksToClick.add(e);
-//			}
-//		}
-//		return linksToClick;
-//	}
+	public List<String> clickableLinks(WebDriver driver)  {
+		List<String> linksToClick = new ArrayList<>();
+		List<WebElement> dashboardLinks = driver.findElements(By.xpath("//div[@class='memberDashboard']//a"));
+		for (WebElement elm : dashboardLinks) {
+			String link = elm.getAttribute("href");
+			if(link!=null && !link.contains("instagram")) {
+				linksToClick.add(link);
+			}
+		}
+
+		return linksToClick;
+	}
 }

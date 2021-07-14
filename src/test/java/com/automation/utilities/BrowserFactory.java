@@ -10,22 +10,24 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 public class BrowserFactory {
 
 	public static WebDriver startApplication(WebDriver driver, String browserName, String url) {
-		switch (browserName) {
-			case "Chrome" -> {
-				System.setProperty("webdriver.chrome.driver", "./Drivers/chromedriver89.exe");
+	
+			if(browserName.equals("Chrome")) {
+				System.setProperty("webdriver.chrome.driver", "./Drivers/chromedriver.exe");
 				driver = new ChromeDriver();
 			}
-			case "Firefox" -> {
-				System.setProperty("webdriver.gecko.driver", "./Drivers/geckodriver.exe");
+			else if(browserName.equals("Firefox")) {
+				System.setProperty("webdriver.gecko.driver","./Drivers/geckodriver.exe");
 				driver = new FirefoxDriver();
 			}
-			case "IE" -> {
+			else if(browserName.equals("IE")) {
 				System.setProperty("webdriver.ie.driver", "./Drivers/IEDriverServer.exe");
 				driver = new InternetExplorerDriver();
 			}
-			default -> System.out.println("Browser not supported");
-		}
-			driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+			else
+			{
+				System.out.println("Browser not supported");
+			}
+			driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS);
 			driver.manage().window().maximize();
 			driver.get(url);
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

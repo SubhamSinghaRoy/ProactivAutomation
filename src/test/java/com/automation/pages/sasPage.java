@@ -53,7 +53,7 @@ public class sasPage {
 	
 	public void selectKit() {
 		js = (JavascriptExecutor) driver;
-		WebElement kit = driver.findElement(By.xpath("//div[@id='mz-drop-zone-kit-section"+config.getSystemCategory()+"']//div[contains(text(),'"+config.getKitName()+"')]"));
+		WebElement kit = driver.findElement(By.xpath("/div[@id='mz-drop-zone-kit-section"+config.getSystemCategory()+"']//div[@id='productsSec' and contains(.,'"+config.getKitName()+"')]"));
 		js.executeScript("arguments[0].scrollIntoView();", kit);
 		kit.click();
 		try {
