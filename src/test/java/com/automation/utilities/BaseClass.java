@@ -36,10 +36,10 @@ public class BaseClass {
 	
 	@BeforeClass
 	public void setup() {
-		if(config.getEnv().equals("Prod")) {
+		if(config.getEnv().equalsIgnoreCase("Prod")) {
 			driver = BrowserFactory.startApplication(driver, config.getBrowser(), config.getProdUrl());
 		}
-		else if(config.getEnv().equals("UAT")) {
+		else if(config.getEnv().equalsIgnoreCase("UAT")) {
 			driver = BrowserFactory.startApplication(driver, config.getBrowser(), config.getUatUrl());
 		}
 	}
@@ -57,7 +57,7 @@ public class BaseClass {
 			logger.fail("Step failed", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
 		}
 		else if(result.getStatus()==ITestResult.SUCCESS){
-			logger.pass("Last step passed", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
+			logger.pass("Test successfully completed", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
 		}
 		report.flush();
 	}

@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import com.automation.utilities.BaseClass;
 
 import java.io.IOException;
-
 public class OrderTest extends BaseClass{
 
 	@Test
@@ -60,7 +59,7 @@ public class OrderTest extends BaseClass{
 		
 		else
 		{
-			logger.fail("order could not be placed successfully"+conf.getOrderNumber()+"", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
+			logger.fail("order could not be placed successfully", MediaEntityBuilder.createScreenCaptureFromPath(helper.captureScreenshot(driver)).build());
 		}
 
 	}

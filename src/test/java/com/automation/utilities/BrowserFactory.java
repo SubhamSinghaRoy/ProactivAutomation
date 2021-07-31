@@ -27,10 +27,10 @@ public class BrowserFactory {
 			{
 				System.out.println("Browser not supported");
 			}
-			driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 			driver.manage().window().maximize();
 			driver.get(url);
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			return driver;
 	}
 	

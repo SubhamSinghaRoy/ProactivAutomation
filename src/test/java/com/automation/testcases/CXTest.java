@@ -81,7 +81,7 @@ public class CXTest extends BaseClass{
 		List<WebElement> dashboardLinks = driver.findElements(By.xpath("//div[@class='memberDashboard']//a"));
 		for (WebElement elm : dashboardLinks) {
 			String link = elm.getAttribute("href");
-			if(link!=null && !link.contains("instagram")) {
+			if(link!=null && link.contains("proactiv")) {
 				linksToClick.add(link);
 			}
 		}

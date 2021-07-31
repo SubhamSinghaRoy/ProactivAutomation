@@ -1,5 +1,6 @@
 package com.automation.pages;
 
+import com.automation.utilities.OrderDetails;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -7,13 +8,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.automation.utilities.ConfigDataProvider;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class sasPage {
 
 	WebDriver driver;
 	JavascriptExecutor js;
 	ConfigDataProvider config = new ConfigDataProvider();
-	
+	OrderDetails od = new OrderDetails();
+
 	public sasPage(WebDriver ldriver) {
 		this.driver = ldriver;
 	}
@@ -25,12 +28,12 @@ public class sasPage {
 	WebElement step2_nextButton;
 	
 
-	
+
 	public void selectSystem() {
-		driver.findElement(By.xpath("//div[@class='systemCategory']//div[contains(text(),'"+config.getSystemname()+"')]")).click();
 		try {
+			driver.findElement(By.xpath("//div[@class='systemCategory']//div[contains(text(),'"+od.getSysName()+"')]")).click();
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -42,41 +45,33 @@ public class sasPage {
 	}
 	
 	public void selectSupply(){
-		driver.findElement(By.xpath("//div[@data-mz-productsupply='"+config.getSupply()+"']")).click();
 		try {
+			driver.findElement(By.xpath("//div[@data-mz-productsupply='"+od.getSupply()+"']")).click();
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void selectKit() {
-		js = (JavascriptExecutor) driver;
-		WebElement kit = driver.findElement(By.xpath("/div[@id='mz-drop-zone-kit-section"+config.getSystemCategory()+"']//div[@id='productsSec' and contains(.,'"+config.getKitName()+"')]"));
-		js.executeScript("arguments[0].scrollIntoView();", kit);
-		kit.click();
 		try {
+			js = (JavascriptExecutor) driver;
+			WebElement kit = driver.findElement(By.xpath("//div[@id='mz-drop-zone-kit-section"+od.getSysCat()+"']//div[@id='productsSec' and contains(.,'"+config.getKitName()+"')]"));
+			js.executeScript("arguments[0].scrollIntoView();", kit);
+			kit.click();
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void clickStep2NextButton() {
 		js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", step2_nextButton);
 		step2_nextButton.click();
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		WebDriverWait wait = new WebDriverWait(driver,20);
+		wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 	}
-	
-
-	
-	
 }

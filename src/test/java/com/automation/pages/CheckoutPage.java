@@ -1,5 +1,6 @@
 package com.automation.pages;
 
+import com.automation.utilities.OrderDetails;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ public class CheckoutPage {
 
 	WebDriver driver;
 	ConfigDataProvider config = new ConfigDataProvider();
+	OrderDetails od = new OrderDetails();
 	JavascriptExecutor js;
 
 
@@ -33,9 +35,6 @@ public class CheckoutPage {
 	
 	@FindBy(name="city")
 	WebElement city;
-	
-//	@FindBy(id="account_state")
-//	WebElement state;
 	
 	@FindBy(name="postal-code")
 	WebElement zipcode;
@@ -74,52 +73,52 @@ public class CheckoutPage {
 	WebElement orderNow;
 
 	public void enterFirstName() {
-		firstName.sendKeys(config.getFirstName());
 		try {
+			firstName.sendKeys(od.getFirstName());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void enterLastName() {
-		lastName.sendKeys(config.getLastName());
 		try {
+			lastName.sendKeys(od.getLastName());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void enterAddress() {
-		address.sendKeys(config.getAddress());
 		try {
+			address.sendKeys(od.getAddress());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void enterCity() {
-		city.click();
-		city.sendKeys(config.getCity());
 		try {
+			city.click();
+			city.sendKeys(od.getCity());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void enterState() {
-		Select state = new Select(driver.findElement(By.id("account_state")));
-		state.selectByVisibleText(config.getState());
 		try {
+			Select state = new Select(driver.findElement(By.id("account_state")));
+			state.selectByVisibleText(od.getState());
 			WebDriverWait wait = new WebDriverWait(driver,3);
-			wait.until(ExpectedConditions.visibilityOfElementLocated((By) zipcode));
+			wait.until(ExpectedConditions.visibilityOf(zipcode));
 			//Thread.sleep(2000);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -129,20 +128,20 @@ public class CheckoutPage {
 	}
 	
 	public void enterZip() {
-		zipcode.sendKeys(config.getZipCode());
 		try {
+			zipcode.sendKeys(od.getZip());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void enterPhone() {
-		phone.sendKeys(config.getPhone());
 		try {
+			phone.sendKeys(od.getPhone());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -159,10 +158,10 @@ public class CheckoutPage {
 	}
 	
 	public void selectShippingMethod() {
-		driver.findElement(By.xpath("//div[@class='shipping-method-section']//span[contains(text(),'"+config.getShippingMethod()+"')]")).click();
 		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+			driver.findElement(By.xpath("//div[@class='shipping-method-section']//span[contains(text(),'"+od.getShipping()+"')]")).click();
+			Thread.sleep(4000);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -170,11 +169,8 @@ public class CheckoutPage {
 
 	public void enterCCDetails(){
 		js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", payWithCCButton);
+		js.executeScript("arguments[0].scrollIntoView(true);", payWithCCButton);
 		payWithCCButton.click();
-		//js.executeScript("arguments[0].scrollIntoView();", continueBillingButton);
-//		Select cardtype = new Select(driver.findElement(By.id("mz-payment-credit-card-type")));
-//		cardtype.selectByVisibleText(config.getCardType());
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -184,63 +180,63 @@ public class CheckoutPage {
 	}
 
 	public void enterCardType(){
-		Select cardtype = new Select(driver.findElement(By.id("mz-payment-credit-card-type")));
-		cardtype.selectByValue(config.getCardType());
 		try {
+			Select cardtype = new Select(driver.findElement(By.id("mz-payment-credit-card-type")));
+			cardtype.selectByValue(od.getCardType());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void enterCardNumber(){
-		cardNumber.sendKeys(config.getCardNumber());
 		try {
+			cardNumber.sendKeys(od.getCardNum());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void enterCardName(){
-		cardName.sendKeys(config.getCardName());
 		try {
+			cardName.sendKeys(od.getCardName());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void enterExpMonth(){
-		Select month = new Select(driver.findElement(By.name("expiration-month")));
-		month.selectByValue(config.getExpMonth());
 		try {
+			Select month = new Select(driver.findElement(By.name("expiration-month")));
+			month.selectByValue(od.getMonth());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void enterExpYear(){
-		Select year = new Select(driver.findElement(By.name("mz-payment-expiration-year")));
-		year.selectByValue(config.getExpYear());
 		try {
+			Select year = new Select(driver.findElement(By.name("mz-payment-expiration-year")));
+			year.selectByValue(od.getYear());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void enterCVV(){
-		cvv.sendKeys(config.getCVV());
 		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+			cvv.sendKeys(od.getCVV());
+			Thread.sleep(3000);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -248,29 +244,26 @@ public class CheckoutPage {
 
 	public void clickContinueBilling(){
 		continueBillingButton.click();
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		WebDriverWait wait = new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.invisibilityOf(cvv));
 	}
 
 	public void enterEmail(){
-		emailField.sendKeys(config.getEmail());
 		try {
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+			emailField.sendKeys(od.getEmail());
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void enterPassword(){
-		passwordField.sendKeys(config.getPassword());
 		try {
+			passwordField.sendKeys(od.getPass());
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

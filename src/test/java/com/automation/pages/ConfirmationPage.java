@@ -26,7 +26,7 @@ public class ConfirmationPage {
 
     public boolean bannerVisible(){
     	WebDriverWait wait = new WebDriverWait(driver, 30);
-    	wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmBannerSection")));
+    	wait.until(ExpectedConditions.visibilityOf(confirmationBanner));
         return confirmationBanner.isDisplayed();
     }
 }

@@ -26,13 +26,8 @@ public class HomePage {
 	
 	public void homeOrderClick() {
 		homeorderCTA.click();
-		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 	}
 	
 	public void selectCountryUSA() {
